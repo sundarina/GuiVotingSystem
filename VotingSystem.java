@@ -38,47 +38,29 @@ public class VotingSystem {
 		return currentVoting.getCandidates();
 	}
 
-	public static String randomField() {
-		String str = "";
-		for (int i = 0; i < 5; i++) {
-			char ch = (char) (Math.random() * 25 + 97);
-			str += Character.toString(ch);
-		}
-		return str;
-	}
+//	public static String randomField() {
+//		String str = "";
+//		for (int i = 0; i < 5; i++) {
+//			char ch = (char) (Math.random() * 25 + 97);
+//			str += Character.toString(ch);
+//		}
+//		return str;
+//	}
 
 	public static void main(String[] args) {
-		
-		
-	
-		
-//		List<Elector> electors = new ArrayList<Elector>();
-//		for (int i = 0; i < 11; i++) {
-//			electors.add(new Elector(randomField(), randomField(), randomField()));
-//		}
+			
 
 		Scanner scanner = new Scanner(System.in);
-		Voting votig = new Voting("Гoлосование за меры города");
+		Voting voting = new Voting("Гoлосование за меры города");
 
-		votig.addCandidates(new Candidate("Павлик Виктор "));
-		votig.addCandidates(new Candidate("Зибров Павел"));
-		votig.addCandidates(new Candidate("Писанка Руслана"));
-		votig.addCandidates(new Candidate("Кличко Владимир"));
-		votig.addCandidates(new Candidate("Карпа Ирэна"));
-		Collections.sort(votig.getCandidates());
+		voting.addCandidates(new Candidate("Павлик Виктор "));
+		voting.addCandidates(new Candidate("Зибров Павел"));
+		voting.addCandidates(new Candidate("Писанка Руслана"));
+		voting.addCandidates(new Candidate("Кличко Владимир"));
+		voting.addCandidates(new Candidate("Карпа Ирэна"));
+		Collections.sort(voting.getCandidates());
 
-		
-//		  System.out.println("Введите имя: ");
-//		  String userRegistrationName = scanner.nextLine(); 
-//		  System.out.println("Введите логин: "); 
-//		  String userRegistrationLogin = scanner.nextLine();
-//		  System.out.println("Введите пароль: ");
-//		  String userRegistrationPassword = scanner.nextLine();
-		 
-
-		// Elector currentUser = new Elector(userRegistrationName, userRegistrationLogin, userRegistrationPassword);
-		
-		Registration reg = new Registration(votig);
+		Registration reg = new Registration(voting.getCandidates());
 		
 		Elector currentUser = new Elector(reg.getUserRegistrationName(), reg.getUserRegistrationLogin(), reg.getUserRegistrationPassword());
 
@@ -86,94 +68,13 @@ public class VotingSystem {
 
 		
 		 votingSystem.addUser(currentUser.getName(), currentUser.getLogin(), currentUser.getPassword()); 
-		  //добавляет пользователя в список голосующих в системе
-		 
 
-//		for (int i = 0; i < electors.size(); i++) {
-//
-//			votingSystem.addUser(electors.get(i).getName(), electors.get(i).getLogin(), electors.get(i).getPassword());
-//			Elector e = votingSystem.findUser(electors.get(i).getLogin(), electors.get(i).getPassword());
-//			e.setVoting(votig);
-//			e.vote(votig.getCandidates().get((int) (Math.random() * 5)).getName());
-//		}
-
-		
-		 //boolean b = false; 
-		 
-//		 do{
-//			 System.out.println("Введите логин, чтобы войти в систему: "); 
-//			 String userLogin = scanner.nextLine();
-//			 System.out.println("Введите пароль, чтобы войти в систему: "); 
-//			 String userPassword = scanner.nextLine();
-//			 
-//		 if (currentUser.enter(userLogin, userPassword) == true) { 
-//			 currentUser = votingSystem.findUser(userLogin, userPassword);
-//			 System.out.println("Вы вошли в систему, и можете голосовать."); 
-//			 b = true; 
-//			 break; 
-//		 } else {
-//			 System.out.println("Неверный логин или пароль, введите еще раз: "); 
-//			 }
-//		 } while (b == false);
-		
-		
-			if(currentUser.enter(reg.getUserLogin(), reg.getUserPassord()) == true) {
-			
-			currentUser = votingSystem.findUser(reg.getUserLogin(), reg.getUserPassord());
-				
+		if (currentUser.enter(reg.getUserLogin(), reg.getUserPassord()) == true) {
+			currentUser = votingSystem.findUser(reg.getUserLogin(), reg.getUserPassord());	
 			}
-		 
-//
-//		System.out.println("Список кандидатов: ");
-//		for (Candidate a : votig.getCandidates()) {
-//			System.out.println(a.getName());
-//		}
+		currentUser.setVoting(voting);
+		currentUser.vote(reg.getUserVote());
 
-		
-		for (Candidate a : votig.getCandidates()) {
-			System.out.println(a.getName());
-		}
-		  
-		 
-
-		
-		  System.out.println("Введите имя кандидата: "); 
-		  String candidateName = scanner.nextLine();
-		  
-		  currentUser.setVoting(votig);
-		  currentUser.vote(candidateName);
-		 
-
-		 List<Candidate> candidateList = votig.getCandidates();
-
-		System.out.println("Результат голосования: ");
-
-		/* List<Candidate> candidateList = votig.getCandidates(); */
-
-		/*
-		 * Collections.sort(votig.getCandidates(), new
-		 * Candidate(candidateName)); 
-		 * System.out.println(" ");
-		 */
-
-		for (Candidate a : votig.getCandidates()) {
-			System.out.println(a.getName() + "  : " + a.getVoices() + ", ");
-		}
-
-		int imax = 0;
-		for (int i = 1; i < votig.getCandidates().size(); i++) {
-
-			if (votig.getCandidates().get(imax).getVoices() < votig.getCandidates().get(i).getVoices()) {
-				imax = i;
-			}
-		}
-		
-		System.out.println("Победитель: " + votig.getCandidates().get(imax).getName());
-		System.out.println();
-		scanner.close();
-		
-		
-	
 	}
 }
 
