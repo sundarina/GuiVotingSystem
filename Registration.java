@@ -18,6 +18,8 @@ public class Registration extends WindowAdapter implements ActionListener {
 	protected JButton regButton, name, login, login2, password2, password, enterButton, votingButton;
 	protected JTextArea listC, listR;
 
+	JScrollPane jsP1, jsP2;
+
 	protected Dialog dialog;
 	protected Label label, candList;
 	protected JButton dialogButton;
@@ -42,7 +44,7 @@ public class Registration extends WindowAdapter implements ActionListener {
 
 		regButton = new JButton("Зарегистрироваться");
 
-		regFrame.setSize(600, 400);
+		regFrame.setSize(400, 300);
 		regFrame.add(txtPanel, BorderLayout.NORTH);
 		regFrame.add(btnPanel, BorderLayout.SOUTH);
 
@@ -128,6 +130,8 @@ public class Registration extends WindowAdapter implements ActionListener {
 
 			regFrame.add(txtPanel2, BorderLayout.NORTH); // добавление 2 панели
 			regFrame.add(btnPanel2, BorderLayout.SOUTH);
+			regFrame.setVisible(true);
+			regFrame.repaint();
 
 		} else if (e.getSource() == enterButton) { // вход
 			userLogin = loginTxt.getText();
@@ -156,13 +160,23 @@ public class Registration extends WindowAdapter implements ActionListener {
 				regFrame.remove(btnPanel2);
 
 				listPanel = new JPanel();
+				listPanel.setLayout(new BorderLayout());
 				voting = new JTextField(20);
 				votingButton = new JButton("Голосовать");
 				candList = new Label("Введите имя выбраного кандидата в поле: ");
 				listC = new JTextArea();
 
-				listPanel.add(candList, BorderLayout.SOUTH);
-				listPanel.add(listC, BorderLayout.NORTH);
+				Iterator<Candidate> iterator = listArea.iterator(); // заполнение
+				// списка
+				// кандидатов
+				while (iterator.hasNext()) {
+					listC.append(iterator.next().getName() + '\n');
+				}
+				jsP1 = new JScrollPane(listC, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+						JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+				listPanel.add(candList, BorderLayout.NORTH);
+				listPanel.add(jsP1, BorderLayout.CENTER);
 
 				btnPanel3 = new JPanel();
 				btnPanel3.add(voting, BorderLayout.WEST);
@@ -174,13 +188,8 @@ public class Registration extends WindowAdapter implements ActionListener {
 																// панель
 				regFrame.add(btnPanel3, BorderLayout.SOUTH);
 
-				Iterator<Candidate> iterator = listArea.iterator(); // заполнение
-																	// списка
-																	// кандидатов
-				while (iterator.hasNext()) {
-					listC.append(iterator.next().getName() + '\n');
-				}
-
+				regFrame.setVisible(true);
+				regFrame.repaint();
 			} else {
 				dialog = new Dialog(regFrame, "Massage", true);
 				label = new Label();
@@ -209,18 +218,30 @@ public class Registration extends WindowAdapter implements ActionListener {
 			regFrame.remove(btnPanel3);
 
 			resultPanel = new JPanel();
-			listR = new JTextArea("Результат голосования:  /n");
+			resultPanel.setLayout(new BorderLayout());
 
-			resultPanel.add(listR, BorderLayout.CENTER);
+			
+
+			listR = new JTextArea("Результат голосования: " + '\n');
+
+			jsP2 = new JScrollPane(listR, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+			resultPanel.add(jsP2, BorderLayout.CENTER);
 
 			regFrame.add(resultPanel);
-
+			
 			Iterator<Candidate> iterator = listArea.iterator(); // заполнение
-																// списка
-																// кандидатов
+			// списка
+			// кандидатов
 			while (iterator.hasNext()) {
-				listR.append(iterator.next().getName() + "  : " + iterator.next().getVoices() + '\n');
+				Candidate temp = iterator.next();
+				listR.append(temp.getName() + "  : " + temp.getVoices() + '\n');
 			}
+
+			regFrame.setVisible(true);
+			regFrame.repaint();
+
 		}
 	}
 
